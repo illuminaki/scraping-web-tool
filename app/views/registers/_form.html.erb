@@ -1,0 +1,62 @@
+<%= form_with(model: register, class: "contents") do |form| %>
+  <% if register.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(register.errors.count, "error") %> prohibited this register from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% register.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :url %>
+    <%= form.textarea :url, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:url].none?, "border-red-400 focus:outline-red-600": register.errors[:url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:title].none?, "border-red-400 focus:outline-red-600": register.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.text_field :description, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:description].none?, "border-red-400 focus:outline-red-600": register.errors[:description].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :emails %>
+    <%= form.text_field :emails, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:emails].none?, "border-red-400 focus:outline-red-600": register.errors[:emails].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :phones %>
+    <%= form.text_field :phones, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:phones].none?, "border-red-400 focus:outline-red-600": register.errors[:phones].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :social_networks %>
+    <%= form.text_field :social_networks, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:social_networks].none?, "border-red-400 focus:outline-red-600": register.errors[:social_networks].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :website_url %>
+    <%= form.text_field :website_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:website_url].none?, "border-red-400 focus:outline-red-600": register.errors[:website_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :address %>
+    <%= form.text_field :address, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:address].none?, "border-red-400 focus:outline-red-600": register.errors[:address].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :list_id %>
+    <%= form.text_field :list_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": register.errors[:list_id].none?, "border-red-400 focus:outline-red-600": register.errors[:list_id].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>
