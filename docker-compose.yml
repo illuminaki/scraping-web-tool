@@ -1,0 +1,84 @@
+services:
+  # PostgreSQL Database
+  db_scraping_web_tool:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: scraping_web_tool_development
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis for Sidekiq
+  redis_scraping_web_tool:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Rails Web Application
+  web_scraping_web_tool:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bin/rails server -b 0.0.0.0 -p 3003"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3003:3003"
+    depends_on:
+      db_scraping_web_tool:
+        condition: service_healthy
+      redis_scraping_web_tool:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_HOST: db_scraping_web_tool
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: scraping_web_tool_development
+      REDIS_URL: redis://redis_scraping_web_tool:6379/0
+      RAILS_DEVELOPMENT_HOSTS: .localhost,.ngrok.io
+    stdin_open: true
+    tty: true
+
+  # Sidekiq Background Job Processor
+  sidekiq_scraping_web_tool:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      db_scraping_web_tool:
+        condition: service_healthy
+      redis_scraping_web_tool:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_HOST: db_scraping_web_tool
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: scraping_web_tool_development
+      REDIS_URL: redis://redis_scraping_web_tool:6379/0
+
+volumes:
+  postgres_data:
+  redis_data:
+  bundle_cache:

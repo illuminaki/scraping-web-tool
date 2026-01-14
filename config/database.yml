@@ -1,0 +1,23 @@
+# PostgreSQL configuration for scraping_web_tool
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV["DATABASE_HOST"] %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
+  username: <%= ENV.fetch("DATABASE_USER", "postgres") %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+
+development:
+  <<: *default
+  database: scraping_web_tool_development
+
+test:
+  <<: *default
+  database: scraping_web_tool_test
+
+production:
+  <<: *default
+  database: scraping_web_tool_production
+  username: scraping_web_tool
+  password: <%= ENV["SCRAPING_WEB_TOOL_DATABASE_PASSWORD"] %>
