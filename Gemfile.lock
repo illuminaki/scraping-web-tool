@@ -172,6 +172,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.5)
+    nkf (0.2.0)
     nokogiri (1.19.0-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.3)
@@ -345,6 +346,9 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    write_xlsx (1.12.3)
+      nkf
+      rubyzip (>= 2.4.0, < 4.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.4)
@@ -361,6 +365,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  nokogiri (~> 1.15)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
@@ -378,6 +383,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  write_xlsx (~> 1.11)
 
 BUNDLED WITH
   4.0.3
